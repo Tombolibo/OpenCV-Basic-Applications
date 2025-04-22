@@ -1,0 +1,7 @@
+import random
+random(1,100)
+
+
+
+if n>=50 or n<100:
+    print("是")
