@@ -1,0 +1,24 @@
+import cv2
+import numpy as np
+
+img = cv2.imread(r'./fingerprint.png')
+imgRotate = img.copy()
+
+ang = 248
+angel = np.deg2rad(ang)
+cos = np.abs(np.cos(angel))
+sin = np.abs(np.sin(angel))
+
+dsize = (int(imgRotate.shape[1]*cos+imgRotate.shape[0]*sin),
+         int(imgRotate.shape[1]*sin+imgRotate.shape[0]*cos))
+print(dsize)
+M = cv2.getRotationMatrix2D((imgRotate.shape[1]//2, imgRotate.shape[0]//2), ang, 1)
+M[0,2] += (dsize[0]-imgRotate.shape[1])//2
+M[1,2] += (dsize[1]-imgRotate.shape[0])//2
+
+imgRotate = cv2.warpAffine(imgRotate, M, dsize, None)
+cv2.imwrite('fingerprint{}.png'.format(ang), imgRotate)
+
+cv2.imshow('test', imgRotate)
+cv2.waitKey(0)
+
